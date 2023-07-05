@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private Transform bulletPrefab;
+    [SerializeField] private GameObject bulletPrefab;
+
+    [SerializeField] private float speed = 3f;
+
+    [SerializeField] private float bulletCoolDownInSecond = 0.5f;
+
+    [SerializeField] private ObjectPool objectPool;
 
     private Camera cam;
 
     private float width;
 
-    [SerializeField] private float speed = 3f;
-
-    [SerializeField] private float bulletCoolDownInSecond = 0.5f;
 
     private bool isShooting;
 
@@ -41,14 +44,13 @@ public class Player : MonoBehaviour
 #endif
     }
 
-
-
-
     private IEnumerator Shoot()
     {
         isShooting = true;
 
-        Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+        GameObject bullet = objectPool.GetPooledObject();
+
+        bullet.transform.position = transform.position;
 
         yield return new WaitForSeconds(bulletCoolDownInSecond);
 
