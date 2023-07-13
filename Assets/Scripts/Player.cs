@@ -4,26 +4,32 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private GameObject bulletPrefab;
-
     [SerializeField] private float speed = 3f;
 
     [SerializeField] private float bulletCoolDownInSecond = 0.5f;
 
     [SerializeField] private ObjectPool objectPool;
 
-    private Camera cam;
+    [SerializeField]private float respawnTime = 2f;
 
     private float width;
 
-
     private bool isShooting;
 
-    private void Awake()
-    {
-        cam = Camera.main;
+    private ShipStat shipStat;
 
-        width = ((1 / (cam.WorldToViewportPoint(new Vector3(1,1,0)).x - 0.5f) / 2) - 0.25f);
+
+    private Vector2 offShipPosition = new Vector2(0, -20);
+
+    private Vector2 startPosition = new Vector2(0, -6);
+
+    private void Start()
+    {
+        width = GameManager.instance.ScreenWidth;
+
+        shipStat = new ShipStat();
+
+        transform.position = startPosition;
     }
 
     private void Update()
@@ -57,4 +63,31 @@ public class Player : MonoBehaviour
         isShooting = false;
     }
 
+    private IEnumerator Respawn()
+    {
+        transform.position = offShipPosition;
+
+        yield return new WaitForSeconds(respawnTime);
+
+        shipStat.StartNewLife();
+
+        transform.position = startPosition;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("EnemyBullet"))
+        {
+
+            if (shipStat.TakeDamege())
+            {
+                Debug.Log("Game Over");
+            }
+            else
+            {
+                StartCoroutine(Respawn());
+            }
+            Debug.Log($"Healt: {shipStat.GetHealt()} , Life: {shipStat.GetLife()}");
+        }
+    }
 }
