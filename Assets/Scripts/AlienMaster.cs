@@ -27,7 +27,7 @@ public class AlienMaster : MonoBehaviour
     private Vector3 vMoveDistance = new Vector3 (0, 0.15f, 0);
 
     [SerializeField] private ObjectPool motherShipPool;
-    private Vector3 motherShitPosition = new Vector3(6,6.5f,0);
+    private Vector3 motherShitPosition = new Vector3(6, 4.5f, 0);
     private float motherShipTimer = 5f;
     private const float MOTHERSHIP_MIN = 15f;
     private const float MOTHERSHIP_MAX = 60f;
