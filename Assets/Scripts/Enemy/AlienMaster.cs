@@ -13,7 +13,7 @@ public class AlienMaster : MonoBehaviour
 
     [SerializeField] private ObjectPool bulletPool;
 
-    [SerializeField] private List<GameObject> alienList = new List<GameObject>();
+    private List<GameObject> alienList = new List<GameObject>();
 
     private bool movingRight;
 
@@ -69,6 +69,11 @@ public class AlienMaster : MonoBehaviour
 
     private void Shoot()
     {
+        if (alienList.Count < 1)
+        {
+            return;
+        }
+
         Vector3 bulletPosition = alienList[Random.Range(0, alienList.Count)].transform.position;
 
         GameObject bullet = bulletPool.GetPooledObject();

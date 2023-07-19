@@ -15,10 +15,9 @@ public class FriendlyFire : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Alien"))
         {
-            collision.gameObject.GetComponent<Alien>().Kill();
+            collision.gameObject.GetComponent<IEnemy>().Kill();
             
             gameObject.SetActive(false);
-
         }
         else if (collision.gameObject.CompareTag("EnemyBullet"))
         {

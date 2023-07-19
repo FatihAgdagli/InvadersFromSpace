@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Alien : MonoBehaviour
+public class Alien : MonoBehaviour,IEnemy
 {
     [SerializeField] private int scorePoint = 1;
 
@@ -18,5 +18,7 @@ public class Alien : MonoBehaviour
         Instantiate(explosionPrefab, transform.position, Quaternion.identity);
 
         gameObject.SetActive(false);
+
+        UIManager.instance.UpdateScore(scorePoint);
     }
 }

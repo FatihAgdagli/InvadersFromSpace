@@ -23,6 +23,8 @@ public class Player : MonoBehaviour
 
     private Vector2 startPosition = new Vector2(0, -6);
 
+    private float dirx;    
+
     private void Start()
     {
         width = GameManager.instance.ScreenWidth;
@@ -30,6 +32,8 @@ public class Player : MonoBehaviour
         shipStat = new ShipStat();
 
         transform.position = startPosition;
+
+        Debug.Log("Started");
     }
 
     private void Update()
@@ -46,6 +50,19 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.Space) && !isShooting) 
         { 
             StartCoroutine(Shoot());
+        }
+#endif
+
+#if UNITY_EDITOR == false
+        dirx = Input.acceleration.x;
+
+        if ((dirx <= 0.1f) && transform.position.x > -width)
+        {
+            transform.Translate(Vector2.left * speed * Time.deltaTime);
+        }
+        if ((dirx >= 0.1f) && transform.position.x < width)
+        {
+            transform.Translate(Vector2.right * speed * Time.deltaTime);
         }
 #endif
     }
@@ -69,8 +86,6 @@ public class Player : MonoBehaviour
 
         yield return new WaitForSeconds(respawnTime);
 
-        shipStat.StartNewLife();
-
         transform.position = startPosition;
     }
 
@@ -88,6 +103,14 @@ public class Player : MonoBehaviour
                 StartCoroutine(Respawn());
             }
             Debug.Log($"Healt: {shipStat.GetHealt()} , Life: {shipStat.GetLife()}");
+        }
+    }
+
+    public void ShootButton()
+    {
+        if (!isShooting)
+        {
+            StartCoroutine(Shoot());
         }
     }
 }

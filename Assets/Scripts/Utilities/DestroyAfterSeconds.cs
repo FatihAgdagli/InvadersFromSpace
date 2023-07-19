@@ -12,6 +12,11 @@ public class DestroyAfterSeconds : MonoBehaviour
     //    //Destroy(gameObject, destroyTimeInSeconds);
     //}
 
+    private void OnEnable()
+    {
+        destroyTimer = 0f;
+    }
+
     private void Update()
     {
         destroyTimer += Time.deltaTime;

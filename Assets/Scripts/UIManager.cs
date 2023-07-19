@@ -20,7 +20,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI waveText;
     private int wave;
 
-    [SerializeField] private Sprite[] lifeSprites;
+    [SerializeField] private Image[] lifeSprites;
 
     [SerializeField] private Image healthBar;
 
@@ -41,15 +41,30 @@ public class UIManager : MonoBehaviour
         instance = this;
     }
 
-    public void UpdateLive(int live)
+    public void UpdateLives(int live)
     {
-        
+        foreach (Image life in lifeSprites)
+        {
+            life.color = pasiveColor;
+        }
+
+        for (int i = 0; i < live; i++)
+        {
+            lifeSprites[i].color = activeColor;
+        }
     }
 
 
     public void UpdateScore(int score)
     {
+        this.score += score;
 
+        scoreText.text = this.score.ToString("000,000");
+    }
+
+    public void UpdateHealtBar(int healt)
+    {
+        healthBar.sprite = healthBars[healt];
     }
 
     public void UpdateHighScore()
@@ -64,5 +79,8 @@ public class UIManager : MonoBehaviour
 
     public void UpdateWave() 
     {
+        this.wave ++;
+
+        waveText.text = wave.ToString();
     }
 }

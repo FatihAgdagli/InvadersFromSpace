@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class ShipStat 
 {
-    private int maxHealt = 3;
-    private int maxLife = 2;
+    private int maxHealt = 5;
+    private int maxLife = 3;
 
     private int currentHealt;
     private int currentLife;
@@ -15,19 +15,24 @@ public class ShipStat
     {
         currentHealt = maxHealt;
         currentLife = maxLife;
+
+        UIManager.instance.UpdateLives(currentLife);
+        UIManager.instance.UpdateHealtBar(currentHealt);
     }
 
     public bool TakeDamege()
     {
         currentHealt--;
-
+        UIManager.instance.UpdateHealtBar(currentHealt);
         if (currentHealt > 0)
         {
             return false;
         }
 
-        currentLife--;
+        StartNewLife();
 
+        currentLife--;
+        UIManager.instance.UpdateLives(currentLife);
         if (currentLife > 0)
         {
             return false;
@@ -39,6 +44,8 @@ public class ShipStat
     public void StartNewLife()
     {
         currentHealt = maxHealt;
+
+        UIManager.instance.UpdateHealtBar(currentHealt);
     }
 
     public int GetHealt() => currentHealt;
